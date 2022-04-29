@@ -1,8 +1,35 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model QuestionMark.Web.Models.ViewModel
+@{
+    ViewData["Title"] = "Date Calculator";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Date Calculator</h1>
+    
+    
+    
+    @using (Html.BeginForm("Submit", "Home", FormMethod.Post))
+    {
+        <div id="divInterestDeatils"></div>
+        @Html.EditorFor(model => model.FromDate, new  { htmlAttributes = new { @class = "datepicker" }})
+        @Html.EditorFor(model => model.ToDate, new  { htmlAttributes = new { @class = "datepicker" }})
+        @Html.TextBoxFor(model => model.Outcome)
+        <input type="submit" value="Submit"/>
+    }
+
 </div>
+
+<link href="lib/jquery-ui-1.13.1.custom/jquery-ui.min.css">
+<link href="lib/jquery-ui-1.13.1.custom/jquery-ui.theme.min.css">
+<link href="lib/jquery-ui-1.13.1.custom/jquery-ui.structure.min.css">
+@section scripts {
+    <script src="lib/jquery-ui-1.13.1.custom/jquery-ui.min.js"></script>
+    
+    <script>
+        $(document).ready(function () {
+            $(".datepicker").datepicker({
+                dateFormat: "dd-mm-yyyy"
+            });
+        });
+    </script>
+}

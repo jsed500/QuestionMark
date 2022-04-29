@@ -1,7 +1,11 @@
+using QuestionMark.Services.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient<DayCalculatorService>();
 
 var app = builder.Build();
 
@@ -11,6 +15,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
 }
 app.UseStaticFiles();
+
 
 app.UseRouting();
 

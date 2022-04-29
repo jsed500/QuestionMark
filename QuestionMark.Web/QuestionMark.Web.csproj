@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\QuestionMark.Services\QuestionMark.Services.csproj" />
+  </ItemGroup>
+
 </Project>
