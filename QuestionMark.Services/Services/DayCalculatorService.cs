@@ -38,7 +38,7 @@ namespace QuestionMark.Services.Services
         /// <param name="day"></param>
         /// <param name="month"></param>
         /// <param name="year"></param>
-        /// <returns>Number of days</returns>
+        /// <returns>Number of days since Jan 1st 4713 BC</returns>
         public double CalculateJulianDayNumber(double day, double month, double year)
         {
             // Formula only works if when date used is Jan/Feb, convert to end of previous year

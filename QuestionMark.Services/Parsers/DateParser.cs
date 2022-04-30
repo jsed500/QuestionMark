@@ -52,11 +52,7 @@ namespace QuestionMark.Services.Parsers
 
             return new ResultError<ParsedDateInput>
             {
-                Result = new ParsedDateInput()
-                {
-                    FromDate = fromDate,
-                    ToDate = toDate
-                }
+                Result = new ParsedDateInput(fromDate, toDate)
             };
         }
     }
