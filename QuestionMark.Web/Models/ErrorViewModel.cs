@@ -1,4 +1,4 @@
-namespace QuestionMark.Models
+namespace QuestionMark.Web.Models
 {
     public class ErrorViewModel
     {

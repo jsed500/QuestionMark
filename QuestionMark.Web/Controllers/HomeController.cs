@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using QuestionMark.Models;
 using System.Diagnostics;
 using QuestionMark.Services.Models;
 using QuestionMark.Services.Services;
+using QuestionMark.Web.Models;
 using ViewModel = QuestionMark.Web.Models.ViewModel;
 
 namespace QuestionMark.Web.Controllers
@@ -25,7 +25,7 @@ namespace QuestionMark.Web.Controllers
         public IActionResult Submit(ViewModel model)
         {
             var dayDiff = _dateService.CalculateDayDifference(new RawDateInput(model.FromDate, model.ToDate));
-            
+
             model.Result = dayDiff.Result?.ToString();
             model.Errors = dayDiff.Errors;
 

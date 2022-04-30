@@ -16,7 +16,7 @@ namespace QuestionMark.Tests.ServiceTests
             _service = new DateService(logger);
         }
 
-        //could have used fixtures for test data instead of inline
+        //could have used fixtures for test data instead of inline data
         [Theory]
         [InlineData("01-05-2022", "30-04-2022", -1, null)]
         [InlineData("30-04-2022", "30-04-2022", 0, null)]
@@ -28,13 +28,22 @@ namespace QuestionMark.Tests.ServiceTests
         [InlineData("08-08-1980", "30-11-2002", 8149, null)]
         [InlineData("14-11-1991", "30-04-2022", 11125, null)]
         [InlineData("01-07-1992", "30-04-2022", 10895, null)]
-        [InlineData("31/12/1999", "01/01/2000", null, new [] { "31/12/1999 is not a valid date in the accepted format 'dd-mm-yyyy'", "01/01/2000 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
-        [InlineData("31/12/1999", "01-01-2000", null, new [] { "31/12/1999 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
-        [InlineData("31-12-1999", "01/01/2000", null, new [] { "01/01/2000 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
-        [InlineData("31-12-1999", "32-01-2000", null, new [] { "32-01-2000 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
+        [InlineData("31/12/1999", "01/01/2000", null,
+            new[]
+            {
+                "31/12/1999 is not a valid date in the accepted format 'dd-mm-yyyy'",
+                "01/01/2000 is not a valid date in the accepted format 'dd-mm-yyyy'"
+            })]
+        [InlineData("31/12/1999", "01-01-2000", null,
+            new[] { "31/12/1999 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
+        [InlineData("31-12-1999", "01/01/2000", null,
+            new[] { "01/01/2000 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
+        [InlineData("31-12-1999", "32-01-2000", null,
+            new[] { "32-01-2000 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
         //todo REGEX to handle leap years??
         //[InlineData("31-12-1999", "29-02-2022", null, new [] { "29-02-2022 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
-        public void DayDifferenceFromStrings(string fromDate, string toDate, int? expectedResult, string[] expectedErrors)
+        public void DayDifferenceFromStrings(string fromDate, string toDate, int? expectedResult,
+            string[] expectedErrors)
         {
             var result = _service.CalculateDayDifference(new RawDateInput(fromDate, toDate));
 

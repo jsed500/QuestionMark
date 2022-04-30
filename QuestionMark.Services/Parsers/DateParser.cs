@@ -12,7 +12,7 @@ namespace QuestionMark.Services.Parsers
         {
             var errors = new List<string>();
 
-            if(!Regex.IsMatch(input.FromDate, DateRegex))
+            if (!Regex.IsMatch(input.FromDate, DateRegex))
             {
                 errors.Add($"{input.FromDate} is not a valid date in the accepted format 'dd-mm-yyyy'");
             }
@@ -35,8 +35,8 @@ namespace QuestionMark.Services.Parsers
 
             var splitFrom = input.FromDate.Split("-");
 
-            fromDate.Day = int.Parse(splitFrom[0]); 
-            fromDate.Month = int.Parse(splitFrom[1]); 
+            fromDate.Day = int.Parse(splitFrom[0]);
+            fromDate.Month = int.Parse(splitFrom[1]);
             fromDate.Year = int.Parse(splitFrom[2]);
 
             var splitTo = input.ToDate.Split("-");
