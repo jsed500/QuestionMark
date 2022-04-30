@@ -5,15 +5,15 @@ using Xunit;
 
 namespace QuestionMark.Tests.ServiceTests
 {
-    public class DayCalculatorServiceTests
+    public class DateServiceTests
     {
-        private readonly DayCalculatorService _service;
+        private readonly DateService _service;
 
-        public DayCalculatorServiceTests()
+        public DateServiceTests()
         {
             //could have used fixtureBase w/autofixture etc.
-            var logger = new Logger<DayCalculatorService>(new LoggerFactory());
-            _service = new DayCalculatorService(logger);
+            var logger = new Logger<DateService>(new LoggerFactory());
+            _service = new DateService(logger);
         }
 
         //could have used fixtures for test data instead of inline
@@ -36,11 +36,7 @@ namespace QuestionMark.Tests.ServiceTests
         //[InlineData("31-12-1999", "29-02-2022", null, new [] { "29-02-2022 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
         public void DayDifferenceFromStrings(string fromDate, string toDate, int? expectedResult, string[] expectedErrors)
         {
-            var result = _service.CalculateDayDifference(new RawDateInput
-            {
-                FromDate = fromDate,
-                ToDate = toDate
-            });
+            var result = _service.CalculateDayDifference(new RawDateInput(fromDate, toDate));
 
             Assert.Equal(expectedResult, result.Result);
             Assert.Equal(expectedErrors, result.Errors);

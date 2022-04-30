@@ -9,11 +9,11 @@ namespace QuestionMark.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly DayCalculatorService _dayCalculatorService;
+        private readonly DateService _dateService;
 
-        public HomeController(DayCalculatorService dayCalculatorService)
+        public HomeController(DateService dateService)
         {
-            _dayCalculatorService = dayCalculatorService;
+            _dateService = dateService;
         }
 
         public IActionResult Index(ViewModel model)
@@ -24,11 +24,7 @@ namespace QuestionMark.Web.Controllers
         [HttpPost]
         public IActionResult Submit(ViewModel model)
         {
-            var dayDiff = _dayCalculatorService.CalculateDayDifference(new RawDateInput()
-            {
-                FromDate = model.FromDate,
-                ToDate = model.ToDate
-            });
+            var dayDiff = _dateService.CalculateDayDifference(new RawDateInput(model.FromDate, model.ToDate));
             
             model.Result = dayDiff.Result?.ToString();
             model.Errors = dayDiff.Errors;

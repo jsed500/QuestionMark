@@ -4,12 +4,12 @@ using QuestionMark.Services.Parsers;
 
 namespace QuestionMark.Services.Services
 {
-    public class DayCalculatorService
+    public class DateService
     {
         // would probably want to use third party logging to files?
-        private readonly ILogger<DayCalculatorService> _logger;
+        private readonly ILogger<DateService> _logger;
 
-        public DayCalculatorService(ILogger<DayCalculatorService> logger)
+        public DateService(ILogger<DateService> logger)
         {
             _logger = logger;
         }
