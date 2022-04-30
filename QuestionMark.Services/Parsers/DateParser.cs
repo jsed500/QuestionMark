@@ -10,13 +10,29 @@ namespace QuestionMark.Services.Parsers
 {
     public static class DateParser
     {
+        //todo make more robust
         public static string DateRegex = "^(0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-](19|20)\\d\\d$";
 
-        public static ParsedDateInput? Parse(this RawDateInput input)
+        public static ResultError<ParsedDateInput> Parse(this RawDateInput input)
         {
-            if(!Regex.IsMatch(input.FromDate, DateRegex) || !Regex.IsMatch(input.ToDate, DateRegex))
+            var errors = new List<string>();
+
+            if(!Regex.IsMatch(input.FromDate, DateRegex))
             {
-                return null;
+                errors.Add($"{input.FromDate} is not a valid date in the accepted format 'dd-mm-yyyy'");
+            }
+
+            if (!Regex.IsMatch(input.ToDate, DateRegex))
+            {
+                errors.Add($"{input.ToDate} is not a valid date in the accepted format 'dd-mm-yyyy'");
+            }
+
+            if (errors.Any())
+            {
+                return new ResultError<ParsedDateInput>
+                {
+                    Errors = errors
+                };
             }
 
             var fromDate = new Date();
@@ -34,10 +50,13 @@ namespace QuestionMark.Services.Parsers
             toDate.Month = int.Parse(splitTo[1]);
             toDate.Year = int.Parse(splitTo[2]);
 
-            return new ParsedDateInput
+            return new ResultError<ParsedDateInput>
             {
-                FromDate = fromDate,
-                ToDate = toDate
+                Result = new ParsedDateInput()
+                {
+                    FromDate = fromDate,
+                    ToDate = toDate
+                }
             };
         }
     }
