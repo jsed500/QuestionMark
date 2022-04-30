@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using QuestionMark.Services.Models;
 using QuestionMark.Services.Services;
 using Xunit;
@@ -11,9 +11,12 @@ namespace QuestionMark.Tests.ServiceTests
 
         public DayCalculatorServiceTests()
         {
-            _service = new DayCalculatorService();
+            //could have used fixtureBase w/autofixture etc.
+            var logger = new Logger<DayCalculatorService>(new LoggerFactory());
+            _service = new DayCalculatorService(logger);
         }
 
+        //could have used fixtures for test data instead of inline
         [Theory]
         [InlineData("01-05-2022", "30-04-2022", -1, null)]
         [InlineData("30-04-2022", "30-04-2022", 0, null)]
@@ -29,7 +32,7 @@ namespace QuestionMark.Tests.ServiceTests
         [InlineData("31/12/1999", "01-01-2000", null, new [] { "31/12/1999 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
         [InlineData("31-12-1999", "01/01/2000", null, new [] { "01/01/2000 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
         [InlineData("31-12-1999", "32-01-2000", null, new [] { "32-01-2000 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
-        //REGEX to handle leap years??
+        //todo REGEX to handle leap years??
         //[InlineData("31-12-1999", "29-02-2022", null, new [] { "29-02-2022 is not a valid date in the accepted format 'dd-mm-yyyy'" })]
         public void DayDifferenceFromStrings(string fromDate, string toDate, int? expectedResult, string[] expectedErrors)
         {

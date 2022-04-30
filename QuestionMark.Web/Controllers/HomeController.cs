@@ -9,34 +9,31 @@ namespace QuestionMark.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly DayCalculatorService _dayCalculatorService;
 
-        public HomeController(ILogger<HomeController> logger, DayCalculatorService dayCalculatorService)
+        public HomeController(DayCalculatorService dayCalculatorService)
         {
-            _logger = logger;
             _dayCalculatorService = dayCalculatorService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(ViewModel model)
         {
-            return View();
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult Submit(ViewModel model)
         {
-            var outcome = _dayCalculatorService.CalculateDayDifference(new RawDateInput()
+            var dayDiff = _dayCalculatorService.CalculateDayDifference(new RawDateInput()
             {
                 FromDate = model.FromDate,
                 ToDate = model.ToDate
             });
-
-            _logger.LogError("Test");
-
-            model.Outcome = outcome?.ToString();
             
-            return View("Index", model);
+            model.Result = dayDiff.Result?.ToString();
+            model.Errors = dayDiff.Errors;
+
+            return RedirectToAction("Index", "Home", model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

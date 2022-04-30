@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Microsoft.Extensions.Logging;
 using QuestionMark.Services.Models;
 using QuestionMark.Services.Parsers;
 
@@ -6,13 +6,30 @@ namespace QuestionMark.Services.Services
 {
     public class DayCalculatorService
     {
+        // would probably want to use third party logging to files?
+        private readonly ILogger<DayCalculatorService> _logger;
+
+        public DayCalculatorService(ILogger<DayCalculatorService> logger)
+        {
+            _logger = logger;
+        }
+
+        /// <summary>
+        /// Calculates the difference in days between two date strings
+        /// </summary>
+        /// <param name="rawInput"></param>
+        /// <returns>Integer (days) if successful. Error strings if parsing or date conversion errors.</returns>
         public ResultError<int?> CalculateDayDifference(RawDateInput rawInput)
         {
             var parsedResult = rawInput.Parse();
 
             if (parsedResult.HasError)
             {
-                //todo log warning
+                foreach (var error in parsedResult.Errors)
+                {
+                    //log warning that input is not correct
+                    _logger.LogWarning(error);
+                }
 
                 return new ResultError<int?>
                 {
@@ -20,11 +37,11 @@ namespace QuestionMark.Services.Services
                 };
             }
 
-            var fromJulian = CalculateJulianDayNumber(parsedResult.Result.FromDate.Day, parsedResult.Result.FromDate.Month,
-                parsedResult.Result.FromDate.Year);
+            var from = parsedResult.Result.FromDate;
+            var to = parsedResult.Result.ToDate;
 
-            var toJulian = CalculateJulianDayNumber(parsedResult.Result.ToDate.Day, parsedResult.Result.ToDate.Month,
-                parsedResult.Result.ToDate.Year);
+            var fromJulian = CalculateJulianDayNumber(from.Day, from.Month, from.Year);
+            var toJulian = CalculateJulianDayNumber(to.Day, to.Month, to.Year);
 
             return new ResultError<int?>
             {
@@ -39,7 +56,7 @@ namespace QuestionMark.Services.Services
         /// <param name="month"></param>
         /// <param name="year"></param>
         /// <returns>Number of days since Jan 1st 4713 BC</returns>
-        public double CalculateJulianDayNumber(double day, double month, double year)
+        public int CalculateJulianDayNumber(double day, double month, double year)
         {
             // Formula only works if when date used is Jan/Feb, convert to end of previous year
             //. i.e 1st Jan 2000 (2000, 1, 1) => (1999, 13, 1)
@@ -49,7 +66,7 @@ namespace QuestionMark.Services.Services
                 year--;
             }
 
-            return 365 * year +  Math.Floor(year / 4) - Math.Floor(year / 100) + Math.Floor(year / 400) + Math.Floor((153 * month + 8)/5) + day + 1721025;
+            return (int) (365 * year + (int)Math.Floor(year / 4) - (int)Math.Floor(year / 100) + (int)Math.Floor(year / 400) + (int)Math.Floor((153 * month + 8)/5) + day + 1721025);
         }
     }
 }

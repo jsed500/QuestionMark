@@ -16,3 +16,16 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+.datepicker-wrapper {
+    margin: 10px;
+    display: inline-block;
+}
